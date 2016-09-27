@@ -1,0 +1,55 @@
+<h1>Project Management Tool</h1>
+
+<h2>Create a new person</h2>
+
+{{#if logged_in}}
+  <form action="/people/create" method="POST">
+    <input type="text" name="name">
+
+    <input type="submit">
+  </form>
+{{/if}}
+
+{{#unless logged_in}}
+  <p>
+    You must login to add a person.
+  </p>
+{{/unless}}
+
+<h2>People</h2>
+
+<ul>
+  {{#each people}}
+    <li>
+      {{this.name}}
+      <ul>
+        {{#if ../logged_in}}
+          <li>
+            <form action="/people/{{this.id}}/tasks/create" method="POST" style="display: inline">
+              <input type="text" name="task" placeholder="add task here">
+              <input type="submit" value"assign task">
+            </form>
+            <form action="people/delete/{{this.name}}?_method=DELETE" method="POST">
+              <!-- option 2, pass in the id of the cat inside the form - you would access this in the route using req.body.id not req.params.id -->
+              <!-- <input type="hidden" name="id" value="{{this.id}}"> -->
+              <button type="submit">DELETE!</button>
+            </form>
+          </li>
+        {{/if}}
+
+        {{#each this.Tasks }}
+          <li>
+            {{this.task}}
+              {{#if ../logged_in}}
+                <form action="task/delete/{{this.Task}}?_method=DELETE" method="POST">
+                  <!-- option 2, pass in the id of the cat inside the form - you would access this in the route using req.body.id not req.params.id -->
+                  <!-- <input type="hidden" name="id" value="{{this.id}}"> -->
+                  <button type="submit">DELETE!</button>
+                </form>  
+              {{/if}}
+          </li>
+        {{/each}}
+      </ul>
+    </li>
+  {{/each}}
+</ul>
